@@ -12,7 +12,6 @@ namespace Delegates
         {
             new TProcessor().Process(new TransactionRequest(), x => true, y => new Transaction(), x => Console.WriteLine(x.GetType()));
             new TProcessor().Process(new OrderRequest(), x => true, y => new Order(), x => Console.WriteLine(x.GetType()));
-            Console.Read();
         }
     }
 }
