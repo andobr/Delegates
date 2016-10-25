@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static System.Console;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Delegates
 {
@@ -40,7 +36,7 @@ namespace Delegates
 
             for (int x = 0; x < rows; x++)
                 for (int y = 0; y < columns; y++)
-                    cells[x, y] = 0;
+                    cells[x, y] = null;
         }
 
         public void Put(int row, int column, int value)
