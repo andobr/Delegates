@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static System.Console;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,62 +9,76 @@ namespace Delegates
 {
     class SpreadsheetsEngine : IObservable
     {
-        List<List<int?>> cells;
+        int?[,] cells;
 
         List<IObserver> observers;
 
         public int Rows
         {
-            get { return cells.Count; }
+            get { return cells.GetLength(0); }
         }
 
         public int Columns
         {
-            get { return cells[0].Count; }
+            get { return cells.GetLength(1); }
         }
+
+        public int? this[int row, int column]
+        {
+            get
+            {
+                CheckIndex(row + 1, column + 1);
+                return cells[row, column];
+            }
+        }
+
 
         public SpreadsheetsEngine(int rows, int columns)
         {
-            cells = new List<List<int?>>();
+            cells = new int?[rows, columns];
             observers = new List<IObserver>();
 
             for (int x = 0; x < rows; x++)
-            {
-                cells.Add(new List<int?>());
                 for (int y = 0; y < columns; y++)
-                    cells[x].Add(null);
-            }
+                    cells[x, y] = 0;
         }
 
         public void Put(int row, int column, int value)
         {
             CheckIndex(row + 1, column + 1);
-            cells[row][column] = value;
+            cells[row, column] = value;
             NotifyObservers();
         }
 
         public void InsertRow(int rowIndex)
         {
             CheckIndex(rowIndex, 0);
-            var newRow = new List<int?>();
-            for (int x = 0; x < Columns; x++)
-                newRow.Add(null);
-            cells.Insert(rowIndex, newRow);
+
+            var result = new int?[Rows + 1, Columns];
+
+            Array.Copy(cells, result, rowIndex * Columns);
+            Array.Copy(cells, rowIndex * Columns, result, rowIndex * Columns + Columns, Rows * Columns - rowIndex * Columns);
+
+            for (int y = 0; y < Columns; y++)
+                result[rowIndex, y] = null; 
+                     
+            cells = result;
+
             NotifyObservers();
         }
 
         public void InsertColumn(int columnIndex)
         {
             CheckIndex(0, columnIndex);
-            foreach (var item in cells)
-                item.Insert(columnIndex, null);
+            var result = new int?[Rows, Columns + 1];
+            for (int x = 0; x < Rows; x++)
+            {
+                Array.Copy(cells, x * Columns, result, x * (Columns + 1), columnIndex);
+                Array.Copy(cells, x * Columns + columnIndex, result, x * (Columns + 1) + columnIndex + 1, Columns - columnIndex);
+                result[x, columnIndex] = null;               
+            }
+            cells = result;              
             NotifyObservers();
-        }
-
-        public int? Get(int row, int column)
-        {
-            CheckIndex(row + 1, column + 1);
-            return cells[row][column];
         }
 
         public void RegisterObserver(IObserver o)
