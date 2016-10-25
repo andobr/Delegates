@@ -10,8 +10,11 @@ namespace Delegates
     {
         static void Main(string[] args)
         {
-            new TProcessor().Process(new TransactionRequest(), x => true, y => new Transaction(), x => Console.WriteLine(x.GetType()));
-            new TProcessor().Process(new OrderRequest(), x => true, y => new Order(), x => Console.WriteLine(x.GetType()));
+            var transactionProcessor = new Processor<Transaction, TransactionRequest>(x => true, y => new Transaction(), x => Console.WriteLine(x.GetType()));
+            var orderProcessor = new Processor<Order, OrderRequest>(x => true, y => new Order(), x => Console.WriteLine(x.GetType()));
+
+            transactionProcessor.Process(new TransactionRequest());
+            orderProcessor.Process(new OrderRequest());
         }
     }
 }

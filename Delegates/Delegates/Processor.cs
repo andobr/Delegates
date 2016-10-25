@@ -6,9 +6,22 @@ using System.Threading.Tasks;
 
 namespace Delegates
 {
-    public class TProcessor
+    public class Processor<T, TRequest>
     {
-        public T Process<T, TRequest>(TRequest request, Func<TRequest, bool> check, Func<TRequest, T> register, Action<T> save)
+        Func<TRequest, bool> check;
+
+        Func<TRequest, T> register;
+
+        Action<T> save;
+
+        public Processor(Func<TRequest, bool> check, Func<TRequest, T> register, Action<T> save)
+        {
+            this.check = check;
+            this.register = register;
+            this.save = save;
+        }
+
+        public T Process(TRequest request)
         {
             if (!check(request))
                 throw new ArgumentException();
