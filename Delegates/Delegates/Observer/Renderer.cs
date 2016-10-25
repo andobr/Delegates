@@ -16,7 +16,7 @@ namespace Delegates
             obs.RegisterObserver(this);
         }
 
-        public void Update(object ob)
+        public void Update(UpdatedInfo info)
         {
             
         }

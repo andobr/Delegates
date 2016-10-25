@@ -43,7 +43,7 @@ namespace Delegates
         {
             CheckIndex(row + 1, column + 1);
             cells[row, column] = value;
-            NotifyObservers();
+            NotifyObservers(new UpdatedInfo { updatedRowIndex = row, updatedColumnIndex = column, updatedValue = value });
         }
 
         public void InsertRow(int rowIndex)
@@ -60,7 +60,7 @@ namespace Delegates
                      
             cells = result;
 
-            NotifyObservers();
+            NotifyObservers(new UpdatedInfo { newRow = rowIndex });
         }
 
         public void InsertColumn(int columnIndex)
@@ -73,8 +73,8 @@ namespace Delegates
                 Array.Copy(cells, x * Columns + columnIndex, result, x * (Columns + 1) + columnIndex + 1, Columns - columnIndex);
                 result[x, columnIndex] = null;               
             }
-            cells = result;              
-            NotifyObservers();
+            cells = result;
+            NotifyObservers(new UpdatedInfo { newColumn = columnIndex });
         }
 
         public void RegisterObserver(IObserver o)
@@ -89,10 +89,10 @@ namespace Delegates
                 observers.Remove(o);
         }
 
-        public void NotifyObservers()
+        public void NotifyObservers(UpdatedInfo info)
         {
             foreach (IObserver o in observers)
-                o.Update(cells);
+                o.Update(info);
         }
 
         private void CheckIndex(int row, int column)

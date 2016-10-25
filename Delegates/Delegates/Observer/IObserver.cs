@@ -8,6 +8,6 @@ namespace Delegates
 {
     public interface IObserver
     {
-        void Update(object ob);
+        void Update(UpdatedInfo ob);
     }
 }

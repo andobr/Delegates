@@ -10,6 +10,6 @@ namespace Delegates
     {
         void RegisterObserver(IObserver o);
         void RemoveObserver(IObserver o);
-        void NotifyObservers();
+        void NotifyObservers(UpdatedInfo info);
     }
 }

@@ -46,6 +46,7 @@
     <Compile Include="Observer\IObservable.cs" />
     <Compile Include="Observer\IObserver.cs" />
     <Compile Include="Observer\Logger.cs" />
+    <Compile Include="Observer\UpdatedInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Observer\Renderer.cs" />
